@@ -1,0 +1,184 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: Proalpha ERP Customer Quote API 1.1.0
+meta:
+  id: wrk_66611022b51b43f7b8e3fc05cc454a82
+  created: 1761571916402
+  modified: 1761571916402
+  description: ""
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_605149add3cb32ef5e28531b3bd27dfdf27e0fc3
+    created: 1761571916420
+    modified: 1761571916420
+environments:
+  name: Base Environment
+  meta:
+    id: env_605149add3cb32ef5e28531b3bd27dfdf27e0fc3
+    created: 1761571916411
+    modified: 1761571916411
+    isPrivate: false
+spec:
+  contents:
+    openapi: 3.0.0
+    info:
+      title: Proalpha ERP Customer Quote API
+      version: 1.1.0
+      description: API for retrieving quote data for a customer from Proalpha ERP.
+    tags:
+      - name: Quote
+        description: Quotes are documents that represent a formal offer for goods or
+          services from a company to a customer.
+    servers:
+      - url: "{schema}://{host}:{port}/api/web/v1/crm/customer"
+        description: The base URL is environment-specific and should be configured
+          accordingly
+        variables:
+          schema:
+            default: https
+            description: The schema (http, https)
+          host:
+            default: demo95.ray-demo.proalpha.services
+            description: The host name
+          port:
+            default: ""
+            description: The port
+    paths:
+      /{customerGuid}/quotes:
+        get:
+          summary: Read a list of quotes for a customer.
+          operationId: quotesForCustomer
+          tags:
+            - Quote
+          description: >
+            Retrieves a list of quotes for a customer from Proalpha ERP. The
+            customer is identified by a GUID.
+          parameters:
+            - $ref: "#/components/parameters/guidParam"
+          responses:
+            "200":
+              $ref: "#/components/responses/SuccessfulQuoteForCustomerListFromERP"
+            "401":
+              $ref: "#/components/responses/UnauthorizedError"
+            "404":
+              $ref: "#/components/responses/NotFoundError"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+    components:
+      securitySchemes:
+        BasicAuth:
+          type: http
+          scheme: basic
+      parameters:
+        guidParam:
+          description: Globally unique id of the customer.
+          in: path
+          name: customerGuid
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$
+            maxLength: 36
+          example: 8acea1a7-0026-96ac-dc11-16b9749f75b4
+      responses:
+        SuccessfulQuoteForCustomerListFromERP:
+          description: Successful response with a list of quotes for a customer.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteForCustomerListFromERP"
+        NotFoundError:
+          description: The specified resource or id was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        UnauthorizedError:
+          description: Insufficient authorization.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        InternalServerError:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      schemas:
+        QuoteForCustomerListFromERP:
+          description: List of quotes for a customer.
+          type: object
+          properties:
+            customerGuid:
+              description: Globally unique id of the customer.
+              type: string
+              pattern: "[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}"
+              maxLength: 36
+            customerNumber:
+              description: Company unique id of the customer.
+              type: string
+              pattern: ^\d{1,8}$
+              maxLength: 8
+            quotes:
+              description: Array of quotes for a customer.
+              type: array
+              items:
+                $ref: "#/components/schemas/QuoteFromERP"
+        QuoteFromERP:
+          description: Quote information from Proalpha.
+          type: object
+          properties:
+            quoteGuid:
+              description: Globally unique id of the quote.
+              type: string
+              pattern: "[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}"
+              maxLength: 36
+            documentNumber:
+              description: Company unique id of the document.
+              type: string
+              pattern: ^\d{1,8}$
+              maxLength: 8
+            documentDate:
+              description: The date the document was issued (YYYY-MM-DD).
+              type: string
+              format: date
+            totalNet:
+              allOf:
+                - $ref: "#/components/schemas/CurrencyRelatedAmount"
+                - description: Net amount with currency.
+        CurrencyRelatedAmount:
+          description: Amount with currency
+          type: object
+          properties:
+            amount:
+              description: Amount of money. The dot and digits after the decimal point are
+                optional.
+              type: number
+              example: 123456.78
+            currencyIsoKey:
+              description: ISO 4217 alphabetic currency code for the net amount.
+              type: string
+              pattern: ^[A-Z]{3}$
+              maxLength: 3
+        Error:
+          description: Error information.
+          type: object
+          properties:
+            errorCode:
+              description: A unique identifier for the type of error that occurred.
+              type: string
+            message:
+              description: A human-readable message providing more details about the error.
+              type: string
+            details:
+              description: A list of detailed error messages or issues related to specific
+                request parameters.
+              type: array
+              items:
+                type: string
+  meta:
+    id: spc_35c8d01f1d3d40568126bb0172ab1f49
+    created: 1761571916405
+    modified: 1761573286358

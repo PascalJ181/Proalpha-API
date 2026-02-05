@@ -1,0 +1,230 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: Proalpha Home Parameter API 1.0.0
+meta:
+  id: wrk_18941982c70041c99cc9eb7ead52a76f
+  created: 1770043172290
+  modified: 1770043172290
+  description: ""
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_6506282ef53dfb6ebf6a4fc9ffa26b0f7579e624
+    created: 1770043172343
+    modified: 1770043172343
+environments:
+  name: Base Environment
+  meta:
+    id: env_6506282ef53dfb6ebf6a4fc9ffa26b0f7579e624
+    created: 1770043172314
+    modified: 1770043172314
+    isPrivate: false
+spec:
+  contents:
+    openapi: 3.0.0
+    info:
+      title: Proalpha Home Parameter API
+      version: 1.0.0
+      description: API for retrieving Production parameter options from Proalpha.
+        These parameters can then be used to show selective content within data
+        tiles.
+      contact:
+        name: Proalpha
+    servers:
+      - url: "{schema}://{host}:{port}/api/web/v1/pps/prod"
+        description: The base URL is specific for each content provider and/or
+          environment and should be configured accordingly
+        variables:
+          schema:
+            default: http
+            description: The schema (http, https)
+          host:
+            default: localhost
+            description: The host name
+          port:
+            default: "35053"
+            description: The port
+    tags:
+      - name: Parameter
+        description: Retrieve parameter options from Proalpha.
+      - name: Health
+        description: Health Check endpoint for the API.
+    paths:
+      /PPCGetWorkOrderStatus:
+        get:
+          summary: Retrieve WorkOrder options in Proalpha
+          description: |
+            Requests available parameter options from Proalpha.
+          operationId: getWorkOrderParameters
+          tags:
+            - Parameter
+          parameters:
+            - $ref: "#/components/parameters/XCallerId"
+            - $ref: "#/components/parameters/XCorrelationId"
+            - $ref: "#/components/parameters/LanguageHeader"
+          responses:
+            "200":
+              description: Successful response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/Parameter"
+            "400":
+              $ref: "#/components/responses/BadRequestError"
+            "401":
+              $ref: "#/components/responses/UnauthorizedError"
+            "404":
+              $ref: "#/components/responses/NotFoundError"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      /health:
+        get:
+          summary: Health check endpoint.
+          description: >
+            Checks the health of the service. Used, for example, by the
+            automated API health monitoring. Returns 'Healthy' or 'Degraded' if
+            the service is  functioning correctly or in a degraded state,
+            respectively. Returns 'Unhealthy' if the service is unhealthy or an
+            unhandled exception occurred.
+          operationId: healthCheck
+          tags:
+            - Health
+          responses:
+            "200":
+              $ref: "#/components/responses/SuccessfulHealthCheck"
+            "503":
+              $ref: "#/components/responses/UnsuccessfulHealthCheck"
+    components:
+      securitySchemes:
+        BasicAuth:
+          type: http
+          scheme: basic
+          description: Provide the credentials of the API/technical user.
+      parameters:
+        LanguageHeader:
+          in: header
+          name: Accept-Language
+          required: false
+          schema:
+            type: string
+          description: >
+            The language of the response content. Follows ISO 639-1 language
+            codes (e.g., 'en', 'fr'). If not provided, the default language 'de'
+            is used.
+        XCallerId:
+          name: x-caller-id
+          description: >
+            Unique ID of the caller of an API. Later on, a call / dependency
+            graph can automatically be generated out of the access logs based on
+            the caller id.
+          in: header
+          schema:
+            type: string
+            example: PAHome_1.2.3
+        XCorrelationId:
+          name: x-correlation-id
+          description: Unique ID of the use case, user interaction, etc. which originally
+            triggered a chain of API calls. The ID is included in each log
+            message and can therefore be used to easily retrieve all correlated
+            logs distributed across multiple products / services. A new ID is
+            generated if no correlation id is included in an inbound request.
+          in: header
+          schema:
+            type: string
+          example: RetrieveTileParameters-f65a90e9-6e1c-4a23-a249-68b8f033a272
+      responses:
+        SuccessfulHealthCheck:
+          description: Healthy or Degraded - The component is either functioning correctly
+            or in a degraded state.
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - Healthy
+                  - Degraded
+              example: Healthy
+        UnsuccessfulHealthCheck:
+          description: Unhealthy - The component is unhealthy or an unhandled exception
+            occurred.
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - Unhealthy
+              example: Unhealthy
+        NotFoundError:
+          description: The specified resource or id was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        BadRequestError:
+          description: The request contains invalid information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        UnauthorizedError:
+          description: Insufficient authorization.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        InternalServerError:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      schemas:
+        Parameter:
+          type: object
+          description: Parameter information including options
+          properties:
+            id:
+              type: string
+              description: The identifier of the parameter.
+            title:
+              type: string
+              description: Title of the parameter
+            options:
+              type: array
+              items:
+                $ref: "#/components/schemas/ParameterOption"
+              description: List of parameter options
+        ParameterOption:
+          type: object
+          required:
+            - id
+            - value
+          properties:
+            id:
+              type: string
+              description: The identifier of the option.
+            value:
+              type: string
+              description: The value of the option.
+        Error:
+          description: Error information.
+          type: object
+          properties:
+            errorCode:
+              description: A unique identifier for the type of error that occurred.
+              type: string
+            message:
+              description: A human-readable message providing more details about the error.
+              type: string
+            details:
+              type: array
+              items:
+                type: object
+              description: An optional list of details about the error.
+          required:
+            - errorCode
+            - message
+  meta:
+    id: spc_20a6bdc5b2e741469c312a99be52d712
+    created: 1770043172297
+    modified: 1770043172306

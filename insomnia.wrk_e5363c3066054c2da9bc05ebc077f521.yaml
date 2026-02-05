@@ -1,0 +1,324 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: Proalpha ERP request provided work order material API 1.0.0
+meta:
+  id: wrk_e5363c3066054c2da9bc05ebc077f521
+  created: 1770043190585
+  modified: 1770043190585
+  description: ""
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_117d29ba82fbb03565ef4f099645f28dc2033e84
+    created: 1770043190622
+    modified: 1770043190622
+environments:
+  name: Base Environment
+  meta:
+    id: env_117d29ba82fbb03565ef4f099645f28dc2033e84
+    created: 1770043190611
+    modified: 1770043190611
+    isPrivate: false
+spec:
+  contents:
+    openapi: 3.0.0
+    info:
+      title: Proalpha ERP request provided work order material API
+      version: 1.0.0
+      description: API for requesting provided work order material.
+    servers:
+      - url: "{schema}://{host}:{port}/api/web/v1/pps/prod/requestProvidedWorkOrderMate\
+          rial"
+        description: The base URL is environment-specific and should be configured
+          accordingly
+        variables:
+          schema:
+            default: http
+            description: The schema (http, https)
+          host:
+            default: localhost
+            description: The host name
+          port:
+            default: "35053"
+            description: The port
+    tags:
+      - name: Request Work Order Material
+        description: Requests necessary material associazed to a work order operation
+      - name: Health
+        description: Health Check endpoint for the API.
+    paths:
+      /workOrder:
+        post:
+          summary: Starts the request process for all of the materials associated to all
+            work order operations
+          operationId: RequestWorkOrderMaterial
+          tags:
+            - Request Work Order Material
+          parameters:
+            - name: x-caller-id
+              description: >
+                Unique ID of the caller of an API. Later on, a call / dependency
+                graph can automatically be generated out of the access logs
+                based on the caller id.
+              in: header
+              schema:
+                type: string
+                example: tisoware-MES-11.2.0
+            - name: x-correlation-id
+              description: Unique ID of the use case, user interaction, etc. which originally
+                triggered a chain of API calls. The ID is included in each log
+                message and can therefore be used to easily retrieve all
+                correlated logs distributed across multiple products / services.
+                A new ID is generated if no correlation id is included in an
+                inbound request.
+              in: header
+              schema:
+                type: string
+                example: Request Work Order Material-f65a90e9-6e1c-4a23-a249-68b8f033a272
+            - name: x-pa-company
+              description: |
+                ID of the company (unique in the 
+                context of a tenant)
+              in: header
+              schema:
+                type: string
+                example: "110"
+              required: true
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/requestWorkOrderMaterial"
+          description: >
+            Requests the material of all operations of a work order. The work
+            order is identified by a GUID.
+          responses:
+            "200":
+              $ref: "#/components/responses/successfulChange"
+            "401":
+              $ref: "#/components/responses/UnauthorizedError"
+            "404":
+              $ref: "#/components/responses/NotFoundError"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      /operation:
+        post:
+          summary: starts the request process for all of the material associated to one
+            work order operation
+          operationId: RequestWorkOrderOperationMaterial
+          tags:
+            - Request Operation Material
+          parameters:
+            - name: x-caller-id
+              description: >
+                Unique ID of the caller of an API. Later on, a call / dependency
+                graph can automatically be generated out of the access logs
+                based on the caller id.
+              in: header
+              schema:
+                type: string
+                example: tisoware-MES-11.2.0
+            - name: x-correlation-id
+              description: Unique ID of the use case, user interaction, etc. which originally
+                triggered a chain of API calls. The ID is included in each log
+                message and can therefore be used to easily retrieve all
+                correlated logs distributed across multiple products / services.
+                A new ID is generated if no correlation id is included in an
+                inbound request.
+              in: header
+              schema:
+                type: string
+                example: Request Work Order Material-f65a90e9-6e1c-4a23-a249-68b8f033a272
+            - name: x-pa-company
+              description: |
+                ID of the company (unique in the 
+                context of a tenant)
+              in: header
+              schema:
+                type: string
+                example: "110"
+              required: true
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/requestWorkOrderMaterial"
+          description: >
+            requests the material of one operation of a work order. The
+            operation line is identified by a GUID.
+          responses:
+            "200":
+              $ref: "#/components/responses/successfulChange"
+            "401":
+              $ref: "#/components/responses/UnauthorizedError"
+            "404":
+              $ref: "#/components/responses/NotFoundError"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      /material:
+        post:
+          summary: starts the request process for one specific material line
+          operationId: RequestSingleMaterial
+          tags:
+            - Request Material
+          parameters:
+            - name: x-caller-id
+              description: >
+                Unique ID of the caller of an API. Later on, a call / dependency
+                graph can automatically be generated out of the access logs
+                based on the caller id.
+              in: header
+              schema:
+                type: string
+                example: tisoware-MES-11.2.0
+            - name: x-correlation-id
+              description: Unique ID of the use case, user interaction, etc. which originally
+                triggered a chain of API calls. The ID is included in each log
+                message and can therefore be used to easily retrieve all
+                correlated logs distributed across multiple products / services.
+                A new ID is generated if no correlation id is included in an
+                inbound request.
+              in: header
+              schema:
+                type: string
+                example: Request Work Order Material-f65a90e9-6e1c-4a23-a249-68b8f033a272
+            - name: x-pa-company
+              description: |
+                ID of the company (unique in the 
+                context of a tenant)
+              in: header
+              schema:
+                type: string
+                example: "110"
+              required: true
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/requestWorkOrderMaterial"
+          description: >
+            requests the material of one operation of a work order. The
+            operation line is identified by a GUID.
+          responses:
+            "200":
+              $ref: "#/components/responses/successfulChange"
+            "401":
+              $ref: "#/components/responses/UnauthorizedError"
+            "404":
+              $ref: "#/components/responses/NotFoundError"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      /health:
+        get:
+          summary: Health Check endpoint
+          operationId: healthCheck
+          tags:
+            - Health
+          responses:
+            "200":
+              description: Healthy or Degraded - The component is either functioning correctly
+                or in a degraded state.
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    enum:
+                      - Healthy
+                      - Degraded
+            "503":
+              description: Unhealthy - The component is unhealthy or an unhandled exception
+                occurred.
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    enum:
+                      - Unhealthy
+    components:
+      securitySchemes:
+        BasicAuth:
+          type: http
+          scheme: basic
+      responses:
+        successfulChange:
+          description: Successful response after changing the resource.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/successfullPosting"
+        NotFoundError:
+          description: The specified resource or id was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        UnauthorizedError:
+          description: Insufficient authorization.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        InternalServerError:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      schemas:
+        requestWorkOrderMaterial:
+          description: starts the request operation for one object
+          type: object
+          required:
+            - guid
+            - requestQuantity
+          properties:
+            guid:
+              description: Globally unique id of the object the request is startet for.
+              type: string
+              pattern: ^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$
+              maxLength: 36
+              example: 8acea1a7-0026-96ac-dc11-16b9749f75b4
+            requestQuantity:
+              type: object
+              required:
+                - quantity
+                - unit
+              properties:
+                quantity:
+                  type: number
+                  description: request quantity
+                  pattern: ^[-]?[0-9]+(\.[0-9]+)?$
+                  example: 100.345
+                  minimum: -999999999.999
+                  maximum: 999999999.999
+                unit:
+                  type: string
+                  description: request quantity unit of measure
+                  example: cm
+        successfullPosting:
+          description: Error information.
+          type: object
+          properties:
+            message:
+              description: A human-readable message providing a response message.
+              type: string
+        Error:
+          description: Error information.
+          type: object
+          properties:
+            errorCode:
+              description: A unique identifier for the type of error that occurred.
+              type: string
+            message:
+              description: A human-readable message providing more details about the error.
+              type: string
+            details:
+              description: A list of detailed error messages or issues related to specific
+                request parameters.
+              type: array
+              items:
+                type: string
+  meta:
+    id: spc_6e88aa4361c24cb984ff8808a1d98c11
+    created: 1770043190606
+    modified: 1770043190608
