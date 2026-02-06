@@ -6,12 +6,345 @@ meta:
   created: 1770385364729
   modified: 1770385364729
   description: ""
+collection:
+  - name: provided work order
+    meta:
+      id: fld_c2853b0bae354727976c463e163ac56a
+      created: 1770385834975
+      modified: 1770388275832
+      sortKey: -1770385834975
+      description: ""
+    children:
+      - url: "{{URL}}{{Basis}}health"
+        name: health
+        meta:
+          id: req_d640e14a5e394f9ab5a50c46af01e82f
+          created: 1770388170396
+          modified: 1770388304894
+          isPrivate: false
+          description: ""
+          sortKey: -1770388214648
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{URL}}{{Basis}}workOrder"
+        name: workOrder
+        meta:
+          id: req_fee78b85f6e2482584b065350bd7eba3
+          created: 1770388190993
+          modified: 1770388386249
+          isPrivate: false
+          description: ""
+          sortKey: -1770388190993
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "guid": "8acea1a7-0026-96ac-dc11-16b9749f75b4",
+              "requestQuantity": {
+                "quantity": 100.345,
+                "unit": "cm"
+              }
+            }
+        parameters:
+          - name: x-pa-company
+            value: "110"
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{URL}}{{Basis}}operation"
+        name: operation
+        meta:
+          id: req_c285d7c686244e27b5bb39518749feec
+          created: 1770388203877
+          modified: 1770388505995
+          isPrivate: false
+          description: ""
+          sortKey: -1770388203877
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "guid": "8acea1a7-0026-96ac-dc11-16b9749f75b4",
+              "requestQuantity": {
+                "quantity": 100.345,
+                "unit": "cm"
+              }
+            }
+        parameters:
+          - name: x-pa-company
+            value: "110"
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{URL}}{{Basis}}material"
+        name: material
+        meta:
+          id: req_bbd4479425ef4c6baf6e649dab65f1ec
+          created: 1770388214548
+          modified: 1770388561297
+          isPrivate: false
+          description: ""
+          sortKey: -1770388214548
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "guid": "8acea1a7-0026-96ac-dc11-16b9749f75b4",
+              "requestQuantity": {
+                "quantity": 100.345,
+                "unit": "cm"
+              }
+            }
+        parameters:
+          - name: x-pa-company
+            value: "110"
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: PJa
+      password: "123456"
+      disabled: false
+    environment:
+      Basis: api/web/v1/pps/prod/requestProvidedWorkOrderMaterial/
+  - name: Company API
+    meta:
+      id: fld_25cdcf25ec3c4952ba1644de396601a7
+      created: 1770385864889
+      modified: 1770387472682
+      sortKey: -1770385864889
+      description: ""
+    children:
+      - url: "{{ _.URL }}{{ _.Basis }}list"
+        name: list
+        meta:
+          id: req_9d7ecc0e0b02458b8c5f57327a827a40
+          created: 1770387069505
+          modified: 1770387302309
+          isPrivate: false
+          description: ""
+          sortKey: -1770387109953
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.URL }}{{ _.Basis }}health"
+        name: health
+        meta:
+          id: req_8160006d543a498b93ea53dd534a78e9
+          created: 1770387505298
+          modified: 1770387529612
+          isPrivate: false
+          description: ""
+          sortKey: -1770387505298
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: Ackermann
+      password: proelectro
+      disabled: false
+    environment:
+      Basis: api/web/v1/master/company/
+  - name: Home Parameter API
+    meta:
+      id: fld_78bb1b24512840f59721ce3b7b0bc586
+      created: 1770385884265
+      modified: 1770387966621
+      sortKey: -1770385884265
+      description: ""
+    children:
+      - url: "{{ _.URL }}{{ _.Basis }}health"
+        name: health
+        meta:
+          id: req_586da36757264950bd08254f54c21ac2
+          created: 1770387613997
+          modified: 1770387912588
+          isPrivate: false
+          description: ""
+          sortKey: -1770387613997
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{URL}}{{Basis}}PPCGetWorkOrderStatus"
+        name: PPCGetWorkOrderStatus
+        meta:
+          id: req_2e58cb310dd0405ca2b8b705d0e553e0
+          created: 1770388005858
+          modified: 1770388029224
+          isPrivate: false
+          description: ""
+          sortKey: -1770388005858
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: Pja
+      password: "123456"
+      disabled: false
+    environment:
+      Basis: api/web/v1/pps/prod/
+  - name: ERP Customer
+    meta:
+      id: fld_f699ddb6e84a4a5a8b70d4e8c58d7b57
+      created: 1770385898868
+      modified: 1770388960601
+      sortKey: -1770385898868
+      description: ""
+    children:
+      - url: "{{URL}}{{Basis}}{{ _.CustomerGUID }}/quote"
+        name: Quote
+        meta:
+          id: req_59319e78a0ee4680857f4ed27f82248d
+          created: 1770388756421
+          modified: 1770388942183
+          isPrivate: false
+          description: ""
+          sortKey: -1770388756421
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: PJa
+      password: "123456"
+      disabled: false
+    environment:
+      Basis: api/web/v1/crm/customer/
+      CustomerGUID: "0815"
 cookieJar:
   name: Default Jar
   meta:
     id: jar_ee5a884b0340e6bd76175ff62bd166cc014a7d99
     created: 1770385364782
-    modified: 1770385364782
+    modified: 1770387936424
+  cookies:
+    - id: e25db7bd-2f5b-4d44-9fc0-a1a2ea4e41e5
+      key: JSESSIONID
+      value: F612C8EF3A1A67A4F8952AF0742D2C732CDFAEE1FF2E.pa-eu-9-demo-a-pas
+      domain: demo95.ray-demo.proalpha.services
+      path: /api
+      secure: false
+      httpOnly: true
+      hostOnly: true
 environments:
   name: Base Environment
   meta:
