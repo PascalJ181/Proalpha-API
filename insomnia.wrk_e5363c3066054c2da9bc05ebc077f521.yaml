@@ -6,12 +6,154 @@ meta:
   created: 1770043190585
   modified: 1770043190585
   description: ""
+collection:
+  - name: provided work order
+    meta:
+      id: fld_dd3efd1bd3df4737844be542d919d112
+      created: 1770304094395
+      modified: 1770304462284
+      sortKey: -1770304094395
+      description: ""
+    children:
+      - url: "{{URL}}{{Basis}}health"
+        name: Health
+        meta:
+          id: req_accda88e1ada4d2d9153e516a64555f6
+          created: 1770281750390
+          modified: 1770304626803
+          isPrivate: false
+          description: ""
+          sortKey: -1770304144765
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        authentication:
+          type: basic
+          useISO88591: false
+          username: Ackermann
+          password: proelectro
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{URL}}{{Basis}}workOrder"
+        name: workOrder
+        meta:
+          id: req_7869d9d67a0745aebdd43d7911dc8682
+          created: 1770281772545
+          modified: 1770306639685
+          isPrivate: false
+          description: ""
+          sortKey: -1770304144665
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "guid": "8acea1a7-0026-96ac-dc11-16b9749f75b4",
+              "requestQuantity": {
+                "quantity": 100.345,
+                "unit": "cm"
+              }
+            }
+        parameters:
+          - name: x-pa-company
+            value: "110"
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: ""
+        name: material
+        meta:
+          id: req_07b4e8c79c22489cbe0ecd86c34f9982
+          created: 1770281796159
+          modified: 1770304151882
+          isPrivate: false
+          description: ""
+          sortKey: -1770304144590
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: ""
+        name: operation
+        meta:
+          id: req_2abf2e39982f4155a96e9871f5d679ec
+          created: 1770281808050
+          modified: 1770304150205
+          isPrivate: false
+          description: ""
+          sortKey: -1770304144615
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: Ackermann
+      password: proelectro
+      disabled: false
+    environment:
+      URL: https://demo95.ray-demo.proalpha.services
+      Basis: /api/web/v1/pps/prod/requestProvidedWorkOrderMaterial/
 cookieJar:
   name: Default Jar
   meta:
     id: jar_117d29ba82fbb03565ef4f099645f28dc2033e84
     created: 1770043190622
-    modified: 1770043190622
+    modified: 1770304431528
+  cookies:
+    - id: b3d34547-0f72-477a-93df-32dcfc8aa9e0
+      key: JSESSIONID
+      value: E6A845CD925DE9896B2F98DD9658985DADF2DD5D5DB9.pa-eu-9-demo-a-pas
+      domain: demo95.ray-demo.proalpha.services
+      path: /api
+      secure: false
+      httpOnly: true
+      hostOnly: true
 environments:
   name: Base Environment
   meta:

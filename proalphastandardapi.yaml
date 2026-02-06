@@ -1,0 +1,18 @@
+type: environment.insomnia.rest/5.0
+schema_version: "5.1"
+name: Proalpha Standard API
+meta:
+  id: wrk_8c72c36a317948e0b53ec8a46b8e2a55
+  created: 1770385026526
+  modified: 1770385026526
+  description: ""
+environments:
+  name: Base Environment
+  meta:
+    id: env_c0102c28b5590b4c75badc6b7a9b2e64f6126238
+    created: 1770385026566
+    modified: 1770385290097
+    isPrivate: false
+  data:
+    URL: https://demo95.ray-demo.proalpha.services/
+    "": ""

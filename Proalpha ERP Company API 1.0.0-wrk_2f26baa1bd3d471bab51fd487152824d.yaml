@@ -1,0 +1,380 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: Proalpha ERP Company API 1.0.0
+meta:
+  id: wrk_2f26baa1bd3d471bab51fd487152824d
+  created: 1770283428835
+  modified: 1770283428835
+  description: ""
+collection:
+  - name: Company
+    meta:
+      id: fld_f1f7b158f8d342b9a4b459bbdbaef983
+      created: 1770303452752
+      modified: 1770303900486
+      sortKey: -1770303452752
+      description: ""
+    children:
+      - url: "{{URL}}{{Basis}}list"
+        name: list
+        meta:
+          id: req_cca56c22c5bf458ea1f625831b8a23fa
+          created: 1770283636648
+          modified: 1770303979062
+          isPrivate: false
+          description: ""
+          sortKey: -1770303903291
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: Ackermann
+      password: proelectro
+      disabled: false
+    environment:
+      URL: https://demo95.ray-demo.proalpha.services/
+      Basis: api/web/v1/master/company/
+      "": ""
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_a6053176d191c4ddab68679ad2e871ff1d653126
+    created: 1770283429075
+    modified: 1770303138634
+  cookies:
+    - id: a98ace55-e62f-47c2-9adf-58519fc6a50d
+      key: JSESSIONID
+      value: 6A14395A824EA553AF4AEEEBC2DE55722D113CDE97DF.pa-eu-9-demo-a-pas
+      domain: demo95.ray-demo.proalpha.services
+      path: /api
+      secure: false
+      httpOnly: true
+      hostOnly: true
+environments:
+  name: Base Environment
+  meta:
+    id: env_a6053176d191c4ddab68679ad2e871ff1d653126
+    created: 1770283428843
+    modified: 1770283428843
+    isPrivate: false
+spec:
+  contents:
+    openapi: 3.0.0
+    info:
+      title: Proalpha ERP Company API
+      version: 1.0.0
+      description: API to get companies from Proalpha ERP
+    servers:
+      - url: "{schema}://{host}:{port}/api/web/v1/master/company"
+        description: The base URL is environment-specific and should be configured
+          accordingly
+        variables:
+          schema:
+            default: http
+            description: The schema (http, https)
+          host:
+            default: localhost
+            description: The host name
+          port:
+            default: "35053"
+            description: The port
+    tags:
+      - name: Company List
+        description: Getting the list of companies.
+      - name: Health
+        description: Health Check endpoint for the API.
+    paths:
+      /list:
+        get:
+          summary: Read a list of existing companies.
+          operationId: readCompanyList
+          tags:
+            - Company List
+          description: |
+            Retrieves a list of existing companies from the ERP system.
+          parameters:
+            - $ref: "#/components/parameters/paCompany"
+            - $ref: "#/components/parameters/paCaller"
+            - $ref: "#/components/parameters/paCorrelation"
+          responses:
+            "200":
+              $ref: "#/components/responses/SuccessfulCompanyListFromERP"
+            "400":
+              $ref: "#/components/responses/BadRequestError"
+            "401":
+              $ref: "#/components/responses/UnauthorizedError"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      /health:
+        get:
+          summary: Health check endpoint.
+          operationId: healthCheck
+          tags:
+            - Health
+          responses:
+            "200":
+              $ref: "#/components/responses/SuccessfulHealthCheck"
+            "503":
+              $ref: "#/components/responses/UnsuccessfulHealthCheck"
+    components:
+      securitySchemes:
+        BasicAuth:
+          type: http
+          scheme: basic
+      parameters:
+        paCompany:
+          name: x-pa-company
+          description: The id of the company for a multi-tenant functionality (mehrere
+            Mandanten)
+          in: header
+          schema:
+            type: string
+          example: "110"
+        paCaller:
+          name: x-caller-id
+          description: >-
+            Unique ID of the caller of an API. Later on, a call / dependency
+            graph can automatically be generated out of the access logs based on
+            the caller id.
+
+            Examples: "ERP-[Version]" or any other unique id of caller (e.g.
+            GUID of an external system).
+          in: header
+          schema:
+            type: string
+          example: DIG-25.0.0
+        paCorrelation:
+          name: x-correlation-id
+          description: >-
+            Unique ID of the use case, user interaction, etc. which originally
+            triggered a chain of API calls. The ID is included in each log
+            message and can therefore be used to easily retrieve all correlated
+            logs distributed across multiple products / services. A new ID is
+            generated if no correlation id is included in an inbound request.
+
+            Example: "Update-Order-[Order-GUID]"
+          in: header
+          schema:
+            type: string
+          example: Update-Order-12345
+      responses:
+        SuccessfulCompanyListFromERP:
+          description: Successful response with list of company details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyListFromERP"
+        SuccessfulHealthCheck:
+          description: Healthy or Degraded - The component is either functioning correctly
+            or in a degraded state.
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - Healthy
+                  - Degraded
+              example: Healthy
+        UnsuccessfulHealthCheck:
+          description: Unhealthy - The component is unhealthy or an unhandled exception
+            occurred.
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - Unhealthy
+              example: Unhealthy
+        BadRequestError:
+          description: The request contains invalid information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        UnauthorizedError:
+          description: Insufficient authorization.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        InternalServerError:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      schemas:
+        CompanyListFromERP:
+          description: List of companies from ERP.
+          type: object
+          properties:
+            companies:
+              description: Array of companies.
+              type: array
+              items:
+                $ref: "#/components/schemas/CompanyFromERP"
+        CompanyFromERP:
+          description: Company information from ERP.
+          type: object
+          properties:
+            companyGuid:
+              description: Globally unique id of the company.
+              type: string
+              pattern: ^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$
+              maxLength: 36
+            companyNumber:
+              description: Company Number. Unique identifier.
+              type: string
+              maxLength: 20
+              minLength: 1
+              example: "99999"
+            salutation:
+              description: salutation of company.
+              type: string
+              maxLength: 80
+            name1:
+              description: description (Bezeichnung) of company.
+              type: string
+              maxLength: 80
+            name2:
+              description: Additional description (Bezeichnung) of company.
+              type: string
+              maxLength: 80
+            name3:
+              description: Additional description (Bezeichnung) of company.
+              type: string
+              maxLength: 80
+            address:
+              $ref: "#/components/schemas/Address"
+            additionalInfo1:
+              description: additional information 1.
+              type: string
+              maxLength: 35
+            additionalInfo2:
+              description: additional information 2.
+              type: string
+              maxLength: 35
+            additionalInfo3:
+              description: additional information 3.
+              type: string
+              maxLength: 35
+            additionalInfo4:
+              description: additional information 4.
+              type: string
+              maxLength: 35
+            additionalInfo5:
+              description: additional information 5.
+              type: string
+              maxLength: 35
+            additionalInfo6:
+              description: additional information 6.
+              type: string
+              maxLength: 35
+            additionalInfo7:
+              description: additional information 7.
+              type: string
+              maxLength: 35
+            additionalInfo8:
+              description: additional information 8.
+              type: string
+              maxLength: 35
+            additionalInfo9:
+              description: additional information 9.
+              type: string
+              maxLength: 35
+            additionalInfo10:
+              description: additional information 10.
+              type: string
+              maxLength: 35
+        Address:
+          description: An address of a location/destination
+          type: object
+          properties:
+            streetName:
+              description: Street name.
+              type: string
+              maxLength: 50
+              example: Auf dem Immel
+            houseNumber:
+              description: House number.
+              type: string
+              maxLength: 12
+              example: "8"
+            postalCode:
+              description: Postal or zip code.
+              type: string
+              maxLength: 10
+              example: "67685"
+            city:
+              description: Name of the city / locality.
+              type: string
+              maxLength: 30
+              example: Weilerbach
+            countryIsoKey:
+              description: Country code as per ISO 3166-1 alpha-2.
+              type: string
+              pattern: ^[A-Z]{2}$
+              maxLength: 2
+              example: DE
+            combinedStreetHouseNumber:
+              type: string
+              description: >
+                Combined street name and house number in the target
+                country-specific format. This field represents the street
+                address as commonly formatted in the country specified by
+                `countryIsoKey`.
+              maxLength: 63
+              example: Quedlinburgerstraße 80
+            federalStateIsoKey:
+              description: Region code as per ISO 3166-2 (e.g., 'DE-BY' for Bayern, 'US-CA'
+                for California).
+              type: string
+              pattern: ^[A-Z]{2}-[A-Z0-9]{1,5}$
+              example: DE-RP
+            postOfficeBoxNumber:
+              description: |
+                The post office box number for PO box addresses.
+              type: string
+              maxLength: 30
+              example: PO Box 789
+            postOfficeBoxNumberPostalCode:
+              description: The postal code for post office box number for PO box addresses.
+              type: string
+              maxLength: 10
+              example: "67685"
+          required:
+            - city
+            - countryIsoKey
+        Error:
+          description: Error information.
+          type: object
+          properties:
+            errorCode:
+              description: A unique identifier for the type of error that occurred.
+              type: string
+            message:
+              description: A human-readable message providing more details about the error.
+              type: string
+            details:
+              description: A list of detailed error messages or issues related to specific
+                request parameters.
+              type: array
+              items:
+                type: string
+  meta:
+    id: spc_468683f489b44a828205f065a37453f1
+    created: 1770283428839
+    modified: 1770283428840

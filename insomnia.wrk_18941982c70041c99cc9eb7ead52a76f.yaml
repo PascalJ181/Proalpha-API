@@ -6,6 +6,48 @@ meta:
   created: 1770043172290
   modified: 1770043172290
   description: ""
+collection:
+  - name: APIHome
+    meta:
+      id: fld_ca117407e50a43beaac4d2be546883af
+      created: 1770384349811
+      modified: 1770384516355
+      sortKey: -1770384349811
+      description: ""
+    children:
+      - url: "{{URL}}{{ _.Basis }}PPCGetWorkOrderStatus"
+        name: GetWorkOrderStatus
+        meta:
+          id: req_75d9c43ed9cc4b8e83289ff4d8de005d
+          created: 1770384323524
+          modified: 1770384597764
+          isPrivate: false
+          description: ""
+          sortKey: -1770384535689
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    authentication:
+      type: basic
+      useISO88591: false
+      username: Ackermann
+      password: proelectro
+      disabled: false
+    environment:
+      URL: https://demo95.ray-demo.proalpha.services/
+      Basis: api/web/v1/master/company/
+      "": ""
 cookieJar:
   name: Default Jar
   meta:
